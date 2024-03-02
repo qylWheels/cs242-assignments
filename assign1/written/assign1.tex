@@ -1,6 +1,7 @@
 
 \documentclass[11pt]{article}
 \usepackage{ctex}
+\usepackage{amsfonts}
 
 \input{../../tex/defs.tex}
 
@@ -57,6 +58,16 @@ Part 2:
 \ir{S-Bool-False}{\ }{\matches{\falset}{\tbool}}
 
 \ir{S-Bool-True}{\ }{\matches{\truet}{\tbool}}
+
+\ir{S-Num}{n \in \mathbb{Z}}{\matches{n}{\msf{num}}}
+
+\ir{S-String}{a \in \{'a' \dots 'z', 'A' \dots 'Z'\}}{\matches{a^{+}}{\msf{string}}}
+
+\ir{S-Num-Correct}{\matches{n}{\msf{num}} \quad (n > 0 \wedge n < 5) \vee n = 10}{\matches{n}{\tau}}
+
+\ir{S-Dict-Correct}{\matches{v1}{\msf{bool}} \quad \matches{v2}{\msf{string}} \quad v2 = 'X' \vee v2 = 'Y'}{\matches{\{'a':v1, 'b':v2\}}{\tau}}
+
+\ir{S-Array-Correct}{\matches{v1}{\msf{num}} }{\matches{[(\{'x':v1\})^{*}]}{\tau}}
 
 % Inference rules go here
 
