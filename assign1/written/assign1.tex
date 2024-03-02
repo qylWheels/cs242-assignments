@@ -1,5 +1,6 @@
 
 \documentclass[11pt]{article}
+\usepackage{ctex}
 
 \input{../../tex/defs.tex}
 
@@ -37,11 +38,13 @@
 Part 1:
 
 \begin{alignat*}{1}
-\msf{Property}~p ::= \qamp \varepsilon \\
-\mid \qamp \ldots \\
+\msf{Property}~p1 ::= \qamp (> 0 \enspace \wedge <5) \enspace \vee =10 \\
+p2 ::= \qamp ='X' \vee ='Y' \\
+p3 ::= \qamp \varepsilon \\
 \\
-\msf{Schema}~\tau ::= \qamp \tnum \prop{p} \\
-\mid \qamp \ldots
+\msf{Schema}~\tau ::= \qamp \msf{num} \prop{p1} \\
+\mid \qamp \left \{ \msf{'a':bool, 'b':string} \prop{p2} \right \} \\
+\mid \qamp \left [ \left \{ \msf{'x':num} \prop{p3} \right \} \right ]
 \end{alignat*}
 
 Part 2:
