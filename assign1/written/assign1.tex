@@ -79,12 +79,26 @@ Part 1:
 
 \begin{mathpar}
 % Inference rules go here
+
+\ir{D-Epsilon}{\ }{(\varepsilon, j) \mapsto (\varepsilon, j)}
+
+\ir{D-Dict-Extract}{\matches{j}{\{s:j'\}}}{(.sa, j) \mapsto (a, j_{s})}
+
+\ir{D-Array-Extract}{\matches{j}{[j']}}{(.[n]a, j) \mapsto (a, j_{n})}
+
+\ir{D-Maps-Over-Array-of-Dicts}{\matches{j}{[\{s:j'\}]} \wedge a = .sa'}{(|a, j) \mapsto (a', [j[0]_{s}, j[1]_{s}, \dots, j[|j| - 1]_{s}])}
+
+\ir{D-Maps-Over-Array-of-Array}{\matches{j}{[[j']]} \wedge a = [n]a'}{(|a, j) \mapsto (a', [j[0][n], j[1][n], \dots, j[|j| - 1][n]])}
+
 \end{mathpar}
 
 Part 2:
 
 \begin{mathpar}
 % Inference rules go here
+
+
+
 \end{mathpar}
 
 \textit{Accessor safety}: for all $a, j, \tau$, if $\matches{a}{\tau}$ and $\matches{j}{\tau}$, then there exists a $j'$ such that $\evals{(a, j)}{\aeps, j'}$.
