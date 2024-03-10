@@ -43,9 +43,9 @@ Part 1:
 p2 ::= \qamp ='X' \vee ='Y' \\
 p3 ::= \qamp \varepsilon \\
 \\
-\msf{Schema}~\tau ::= \qamp \msf{num} \prop{p1} \\
-\mid \qamp \left \{ \msf{'a':bool, 'b':string} \prop{p2} \right \} \\
-\mid \qamp \left [ \left \{ \msf{'x':num} \prop{p3} \right \} \right ]
+\msf{Schema}~\tau 1 ::= \qamp \msf{num} \prop{p1} \\
+\tau 2 ::= \qamp \left \{ \msf{'a':bool, 'b':string} \prop{p2} \right \} \\
+\tau 3 ::= \qamp \left [ \left \{ \msf{'x':num} \prop{p3} \right \} \right ]
 \end{alignat*}
 
 Part 2:
@@ -84,7 +84,7 @@ Part 1:
 
 \ir{D-Dict-Extract}{\matches{j}{\{s:j'\}}}{(.sa, j) \mapsto (a, j_{s})}
 
-\ir{D-Array-Extract}{\matches{j}{[j']}}{(.[n]a, j) \mapsto (a, j_{n})}
+\ir{D-Maps-Over-Array}{\matches{j}{[j']}}{(|a, j) \mapsto (\varepsilon, [j_{a}])}
 
 \ir{D-Maps-Over-Array-of-Dicts}{\matches{j}{[\{s:j'\}]} \wedge a = .sa'}{(|a, j) \mapsto (a', [j[0]_{s}, j[1]_{s}, \dots, j[|j| - 1]_{s}])}
 
@@ -97,7 +97,13 @@ Part 2:
 \begin{mathpar}
 % Inference rules go here
 
+\ir{V-Epsilon}{\matches{j}{\tau}}{\matches{\varepsilon}{\tau}}
 
+\ir{V-String}{\matches{a}{\tau} \quad \matches{j}{\tau}}{\matches{.sa}{\{\msf{string}:j\}}}
+
+\ir{V-Index}{\matches{a}{\tau} \quad \matches{j}{\tau}}{\matches{[n]a}{[j]}}
+
+\ir{V-Maps-Over-Array}{\matches{a}{\tau} \quad \matches{j}{\tau}}{\matches{|a}{[j]}}
 
 \end{mathpar}
 
@@ -105,6 +111,19 @@ Part 2:
 
 \begin{proof}
 % Proof goes here.
+
+1. 当$a = \varepsilon \wedge \matches{j}{\tau}$时，根据$\mathbf{V-Epsilon}$有$\matches{a}{\tau}$. 此时存在$j' = j$，使得$(a, j) \mapsto (\varepsilon, j')$. 故命题对于$a = \varepsilon$成立.
+
+2. 假设对于现有的$a, j, \tau$，$\matches{a}{\tau} \wedge \matches{j}{\tau}$，存在$j'$使得$\evals{(a, j)}{(\varepsilon, j')}$.
+
+3. 对于$.sa$与$\matches{\{(\msf{string}:j)^{*}\}}{\{\msf{string}:j\}}$，根据$\mathbf{V-String}$有$\matches{.sa}{\{\msf{string}:j\}}$，根据$\mathbf{D-Dict-Extract}$有$(.sa, \{(\msf{string}:j)^{*}\}) \mapsto \evals{(a, j_{s})}{(\varepsilon, j')}$，其中$\matches{j_{s}}{\tau}$.  故命题对$.sa$成立.
+
+4. 对于$[n]a$与$\matches{[j^{*}]}{[j]}$，根据$\mathbf{V-Index}$有$\matches{[n]a}{[j]}$，根据$\mathbf{D-Array-Extract}$有$([n]a, [j^{*}]) \mapsto \evals{(a, j_{n})}{(\varepsilon, j')}$，其中$\matches{j_{n}}{\tau}$. 故命题对$[n]a$成立.
+
+5. 对于$|a$与$\matches{[j^{*}]}{[j]}$，根据$\mathbf{V-Maps-Over-Array}$有$\matches{|a}{[j]}$，根据$|a$的定义和归纳假设有$\evals{(|a, [j])}{(\varepsilon, [j_{a}])}$. 故命题对$|a$成立.
+
+综上，命题得证.
+
 \end{proof}
 
 \end{document}
